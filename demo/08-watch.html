@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vue3</title>
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" v-model="quetion" />
+            <div>anser:{{anser}}</div>
+        </div>
+
+        <script type="module">
+            // 使用浏览器支持 es module 特性
+            import { createApp, ref, watch } from '../node_modules/vue/dist/vue.esm-browser.js';
+
+            createApp({
+                setup() {
+                    let quetion = ref('');
+                    let anser = ref('');
+
+                    watch(quetion, async (newValue, oldValue) => {
+                        let res = await fetch('https://www.yesno.wtf/api');
+                        let data = await res.json();
+                        anser.value = data.answer;
+                    });
+
+                    return {
+                        quetion,
+                        anser
+                    };
+                }
+            }).mount('#app');
+        </script>
+    </body>
+</html>

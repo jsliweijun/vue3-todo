@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vue3</title>
+    </head>
+    <body>
+        <div id="app">
+            <button @click="incream">加加</button>
+            <span>{{count}}</span>
+        </div>
+
+        <script type="module">
+            // 使用浏览器支持 es module 特性
+            import { createApp, ref } from '../node_modules/vue/dist/vue.esm-browser.js';
+
+            function useCount() {
+                let count = ref(0);
+
+                return {
+                    count,
+                    incream: () => {
+                        // count++;
+
+                        // 修改基本数据类型的相应式数据需要使用value 属性
+                        count.value++;
+                    }
+                };
+            }
+
+            createApp({
+                setup() {
+                    return {
+                        ...useCount()
+                    };
+                }
+            }).mount('#app');
+        </script>
+    </body>
+</html>

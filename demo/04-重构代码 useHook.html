@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vue3</title>
+    </head>
+    <body>
+        <div id="app">
+            x:{{position.x}} <br />
+            y:{{position.y}} <br />
+        </div>
+
+        <script type="module">
+            // 使用浏览器支持 es module 特性
+            import { createApp, reactive, onMounted, onUnmounted } from '../node_modules/vue/dist/vue.esm-browser.js';
+
+            const app = createApp({
+                // props
+                // context : attrs,emit, slots
+                setup() {
+                    const position = reactive({ x: 100, y: 100 });
+
+                    const update = (e) => {
+                        position.x = e.pageX;
+                        position.y = e.pageY;
+                    };
+
+                    onMounted(() => {
+                        window.addEventListener('mousemove', update);
+                    });
+
+                    onUnmounted(() => {
+                        window.removeEventListener('mousemove', update);
+                    });
+
+                    // 需要返回一个对象
+                    return {
+                        position
+                    };
+                }
+            });
+
+            console.log(app); // 这个对象中没有 $开头的成员了，它不需要区分用户和框架的了，用户不用往上面添加成员了。
+
+            app.mount('#app');
+        </script>
+    </body>
+</html>

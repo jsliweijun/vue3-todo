@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vue3</title>
+    </head>
+    <body>
+        <div id="app">
+            <button @click="push">加</button>
+            <span>{{todoLength}}</span>
+        </div>
+
+        <script type="module">
+            // 使用浏览器支持 es module 特性
+            import { createApp, reactive, computed } from '../node_modules/vue/dist/vue.esm-browser.js';
+
+            createApp({
+                setup() {
+                    let todos = reactive([
+                        {
+                            name: 'vue',
+                            completed: false
+                        },
+                        {
+                            name: 'node',
+                            completed: false
+                        },
+                        {
+                            name: 'ts',
+                            completed: true
+                        }
+                    ]);
+
+                    // 计算属性，通过依赖属性计算出最新的值
+                    let todoLength = computed(() => {
+                        return todos.map((item) => !item.completed).length;
+                    });
+
+                    return {
+                        todoLength,
+                        push: () => {
+                            todos.push({
+                                name: '安全',
+                                completed: false
+                            });
+                        }
+                    };
+                }
+            }).mount('#app');
+        </script>
+    </body>
+</html>

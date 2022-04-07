@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vue3</title>
+    </head>
+    <body>
+        <div id="app">
+            <button @click="add">加</button>
+            <div>{{count}}</div>
+            <button @click="stopAdd">stop</button>
+            <br />
+            <button @click="addNum">加</button>
+            <div>{{num}}</div>
+        </div>
+
+        <script type="module">
+            // 使用浏览器支持 es module 特性
+            import { createApp, ref, watchEffect } from '../node_modules/vue/dist/vue.esm-browser.js';
+
+            // watchEffect  是 watch 简化版本，返回一个取消监听的函数，接收一个函数作为参数，函数内部变化时函数会被执行
+            createApp({
+                setup() {
+                    let count = ref(0);
+                    let num = ref(0);
+
+                    let stopAdd = watchEffect(() => {
+                        console.log(count.value);
+                    });
+
+                    return {
+                        count,
+                        num,
+                        stopAdd,
+                        add: () => {
+                            count.value++;
+                        },
+                        addNum: () => {
+                            num.value++;
+                        }
+                    };
+                }
+            }).mount('#app');
+        </script>
+    </body>
+</html>
